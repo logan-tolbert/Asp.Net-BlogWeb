@@ -1,0 +1,18 @@
+@model App.Web.Models.ArticleViewModel
+<link rel="stylesheet" href="~/css/ArticlsSummary.css" />
+
+<article class="journal-entry">
+    <div class="summary-content">
+        <h2 class="entry-title">@Model.Title</h2>
+        <div class="entry-meta">
+            By @Model.Author | @Model.CreatedAt.ToString("yyyy-MM-dd")
+            <span class="tags">
+                @foreach (var tag in Model.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    <span class="tag">@tag.Trim()</span>
+                }
+            </span>
+        </div>
+        <div class="entry-description">@Model.Content</div>
+    </div>
+</article>

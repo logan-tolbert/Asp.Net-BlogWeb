@@ -1,0 +1,9 @@
+﻿@page  
+@model App.Web.Pages.ArticlesModel
+@{  
+}  
+
+@foreach (var article in Model.Articles)  
+{  
+    @await Html.PartialAsync("Partials/_ArticleSummary", article)  
+}
