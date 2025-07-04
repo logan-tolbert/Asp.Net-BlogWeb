@@ -1,8 +1,12 @@
+using App.Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient();
 
+// Register the BlogApiService
+builder.Services.AddScoped<IBlogApiService, BlogApiService>();
 
 builder.Services.AddRazorPages();
 

@@ -1,10 +1,120 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Personal Blog Platform";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<link rel="stylesheet" href="~/css/index.css" />
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Welcome to My Blog</h1>
+        <p class="hero-subtitle">A personal space for thoughts, ideas, and discoveries</p>
+        <div class="hero-actions">
+            <a href="/Articles" class="btn btn-primary btn-lg">Browse All Articles</a>
+            <a href="#recent-posts" class="btn btn-primary btn-lg">Recent Posts</a>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <div class="hero-graphic">
+            <div class="floating-card card-1"></div>
+            <div class="floating-card card-2"></div>
+            <div class="floating-card card-3"></div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Recent Articles Section -->
+    <section id="recent-posts" class="recent-posts-section">
+        <div class="section-header">
+            <h2 class="section-title">Recent Articles</h2>
+            <p class="section-subtitle">Latest thoughts and discoveries</p>
+        </div>
+        
+        @if (Model.HasArticles)
+        {
+            <div class="articles-grid">
+                @foreach (var article in Model.RecentArticles)
+                {
+                    <article class="article-card">
+                        <div class="article-card-content">
+                            <h3 class="article-title">
+                                <a href="/Articles/@article.Id" class="article-link">@article.Title</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span class="article-author">By @article.Author</span>
+                                <span class="article-date">@article.CreatedAt.ToString("MMM dd, yyyy")</span>
+                            </div>
+                            <p class="article-excerpt">
+                                @(article.Content.Length > 150 ? article.Content.Substring(0, 150) + "..." : article.Content)
+                            </p>
+                            <div class="article-tags">
+                                @foreach (var tag in article.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries).Take(3))
+                                {
+                                    <span class="tag">@tag.Trim()</span>
+                                }
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+            
+            <div class="view-all-container">
+                <a href="/Articles" class="btn btn-outline-primary">View All Articles</a>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">📝</div>
+                <h3>No Articles Yet</h3>
+                <p>Your first article will appear here once you start writing.</p>
+                <a href="/Articles" class="btn btn-primary">Browse Articles</a>
+            </div>
+        }
+    </section>
+
+    <!-- Popular Tags Section -->
+    @if (Model.PopularTags.Any())
+    {
+        <section class="tags-section">
+            <div class="section-header">
+                <h2 class="section-title">Popular Topics</h2>
+                <p class="section-subtitle">Explore articles by tag</p>
+            </div>
+            <div class="tags-cloud">
+                @foreach (var tag in Model.PopularTags)
+                {
+                    <a href="/Articles?tag=@tag" class="tag-link">@tag</a>
+                }
+            </div>
+        </section>
+    }
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>About This Blog</h2>
+                <p>This is a personal blog platform built with modern web technologies. It's designed to be a space for sharing thoughts, documenting learning experiences, and exploring ideas.</p>
+                <p>The platform is built with ASP.NET Core, Razor Pages, and a clean, responsive design that works beautifully on any device.</p>
+            </div>
+            <div class="about-stats">
+                <div class="stat-item">
+                    <div class="stat-number">@Model.RecentArticles.Count</div>
+                    <div class="stat-label">Recent Posts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">@Model.PopularTags.Count</div>
+                    <div class="stat-label">Topics</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Possibilities</div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
